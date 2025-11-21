@@ -1,0 +1,19 @@
+{
+  "name": "cst3144-full-stack-development",
+  "private": true,
+  "scripts": {
+    "start": " node vue.js"
+  },
+  "version": "1.0.0",
+  "main": "script.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^7.0.0",
+    "mustache": "^4.2.0"
+  }
+}
