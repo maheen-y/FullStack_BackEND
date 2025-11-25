@@ -7,9 +7,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 var app = express();
 
-
-// Use CORS 
-app.use(cors());
+// Use CORS for requests 
+app.use(cors({
+    origin: "*", 
+    methods: ["GET", "POST", "PUT"], 
+    allowedHeaders: ["Content-Type"]
+}));
 
 app.use(express.json());
 
