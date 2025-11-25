@@ -1,4 +1,5 @@
 // Import required modules
+require("dotenv").config();
 var express = require("express");
 var path = require("path");
 const cors = require("cors");
@@ -22,7 +23,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 // Static file middleware to return lesson images
 app.use("/images", express.static(path.join(__dirname, "static/images")));
 
@@ -32,13 +32,14 @@ app.use("/images", (req, res) => {
 });
 
 // Connect to MongoDB
-const uri = "mongodb+srv://my402_db_user:jPy6ZbxcOuwyHdNK@afterschoolactivities.j1evepr.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient (uri, {
+const uri = process.env.Mongo_URI;
+
+const client = new MongoClient(uri, {
     serverApi: {
-   version: ServerApiVersion.v1, 
-   strict: false,
-   deprecationErrors: true,
-    },
+        version: ServerApiVersion.v1,
+        strict: false,
+        deprecationErrors: true,
+    }
 });
 
 let database;
@@ -58,7 +59,6 @@ async function connectDB() {
     } catch (error) {
         console.error("Connection unsuccessful:", error);
     }
-
 }
 
 connectDB();
@@ -69,7 +69,7 @@ connectDB();
 app.get("/lessons", async (req, res) => {
     try {
         const lessons = await lessonsCollection.find({}).toArray();
-         res.json(lessons);
+        res.json(lessons);
     } catch (error) {
         res.status(500).json({ message: "lessons could not be found"});
     }  
@@ -91,27 +91,25 @@ app.post("/orders", async (req, res) => {
 });
 
 // PUT route - update an attribute of a lesson
-app.put("/lessons/:id", async (req, res)=>{
+app.put("/lessons/:id", async (req, res) => {
     const id = req.params.id;
     const updates = req.body;
 
     try {
         const outcome = await lessonsCollection.updateOne(
-            {_id: new ObjectId(id) },
+            { _id: new ObjectId(id) },
             { $set: updates }
         );
 
-        if(outcome.matchedCount === 0){
+        if (outcome.matchedCount === 0) {
             return res.status(404).json({ error: "Lesson does not exist"});
         }
 
         res.json({ message: "Lesson update successful"});
-    } catch (error){
+    } catch (error) {
         res.status(500).json({ error: "Lessons could not update" });
     }
 });
 
-
 // App listens on port 3000
 app.listen(3000, () => console.log("Server running on port 3000"));
-
