@@ -26,10 +26,6 @@ app.use((req, res, next) => {
 // Static file middleware to return lesson images
 app.use("/images", express.static(path.join(__dirname, "static/images")));
 
-// Displays error message if image file does not exist
-app.use("/images", (req, res) => {
-    res.status(404).send("Image file does not exist, please try again");
-});
 
 // Connect to MongoDB
 const uri = process.env.Mongo_URI;
@@ -109,6 +105,11 @@ app.put("/lessons/:id", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lessons could not update" });
     }
+});
+
+// Displays error message if file not found
+app.use((req, res) => {
+    res.status(404).send(" File does not exist, please try again");
 });
 
 // App listens on port 3000
