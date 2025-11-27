@@ -2,10 +2,10 @@
   "name": "cst3144-full-stack-development",
   "private": true,
   "scripts": {
-    "start": " node vue.js"
+    "start": " node server.js"
   },
   "version": "1.0.0",
-  "main": "script.js",
+  "main": "server.js",
   "author": "",
   "license": "ISC",
   "description": "",
