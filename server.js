@@ -1,5 +1,5 @@
 // Import required modules
-require("dotenv").config();
+require("dotenv").config(); // Used to load the env file 
 var express = require("express");
 var path = require("path");
 const cors = require("cors");
@@ -8,10 +8,10 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 var app = express();
 
-// Use CORS for requests 
+// Use CORS for requests
 app.use(cors({
-    origin: "*", 
-    methods: ["GET", "POST", "PUT"], 
+    origin: "*",
+    methods: ["GET", "POST", "PUT"],
     allowedHeaders: ["Content-Type"]
 }));
 
@@ -28,12 +28,12 @@ app.use((req, res, next) => {
 app.use("/images", express.static(path.join(__dirname, "static/images")));
 
 // Error message displayed in JSON format if image file does not exist 
-app.use("/images", (req, res) =>{
-    res.status(404).json({ error: "Image file does not exist, please try again"});
+app.use("/images", (req, res) => {
+    res.status(404).json({ error: "Image file does not exist, please try again" });
 });
 
 
-// Connect to MongoDB
+// Allows server to access MongoDB URI
 const uri = process.env.Mongo_URI;
 
 const client = new MongoClient(uri, {
@@ -48,12 +48,14 @@ let database;
 let lessonsCollection;
 let ordersCollection;
 
+// Server connects to MongoDB
 async function connectDB() {
+
     try {
         await client.connect();
 
+        // Required database and collections are accessed
         database = client.db("SchoolActivities");
-
         lessonsCollection = database.collection("lessons");
         ordersCollection = database.collection("orders");
 
@@ -73,22 +75,22 @@ app.get("/lessons", async (req, res) => {
         const lessons = await lessonsCollection.find({}).toArray();
         res.json(lessons);
     } catch (error) {
-        res.status(500).json({ message: "lessons could not be found"});
-    }  
+        res.status(500).json({ message: "lessons could not be found" });
+    }
 });
 
 // POST route - save new order into order collection
 app.post("/orders", async (req, res) => {
     const newOrder = req.body;
 
-    try{
+    try {
         const outcome = await ordersCollection.insertOne(newOrder);
         res.status(201).json({
-            message: "Your order has been saved", 
+            message: "Your order has been saved",
             orderId: outcome.insertedId
         });
-    } catch (error){
-        res.status(500).json({ error: "Your order could not be saved"});
+    } catch (error) {
+        res.status(500).json({ error: "Your order could not be saved" });
     }
 });
 
@@ -104,10 +106,10 @@ app.put("/lessons/:id", async (req, res) => {
         );
 
         if (outcome.matchedCount === 0) {
-            return res.status(404).json({ error: "Lesson does not exist"});
+            return res.status(404).json({ error: "Lesson does not exist" });
         }
 
-        res.json({ message: "Lesson update successful"});
+        res.json({ message: "Lesson update successful" });
     } catch (error) {
         res.status(500).json({ error: "Lessons could not update" });
     }
