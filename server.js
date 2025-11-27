@@ -17,7 +17,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Logger middleware which includes a timestamp to output requests
+// Logger middleware includes a timestamp - outputs all requests to server console
 app.use((req, res, next) => {
     const timestamp = new Date().toISOString();
     console.log(`[${timestamp}] ${req.method} Incoming request to ${req.url}`);
@@ -26,6 +26,11 @@ app.use((req, res, next) => {
 
 // Static file middleware to return lesson images
 app.use("/images", express.static(path.join(__dirname, "static/images")));
+
+// Error message displayed in JSON format if image file does not exist 
+app.use("/images", (req, res) =>{
+    res.status(404).json({ error: "Image file does not exist, please try again"});
+});
 
 
 // Connect to MongoDB
@@ -62,7 +67,7 @@ connectDB();
 
 // HTTP methods
 
-// GET route for /lessons
+// GET route for /lessons - returns lessons in JSON format
 app.get("/lessons", async (req, res) => {
     try {
         const lessons = await lessonsCollection.find({}).toArray();
@@ -106,11 +111,6 @@ app.put("/lessons/:id", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Lessons could not update" });
     }
-});
-
-// Displays error message if file not found
-app.use((req, res) => {
-    res.status(404).send(" File does not exist, please try again");
 });
 
 // App listens on port 3000
