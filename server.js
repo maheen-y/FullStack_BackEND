@@ -17,9 +17,10 @@ app.use(cors({
 
 app.use(express.json());
 
-// Logger middleware to output requests
+// Logger middleware which includes a timestamp to output requests
 app.use((req, res, next) => {
-    console.log("Incoming request " + req.method + " to " + req.url);
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${req.method} Incoming request to ${req.url}`);
     next();
 });
 
