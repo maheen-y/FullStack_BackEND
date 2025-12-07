@@ -2,7 +2,7 @@
   "name": "cst3144-full-stack-development",
   "private": true,
   "scripts": {
-    "start": " node server.js"
+    "start": "node server.js"
   },
   "version": "1.0.0",
   "main": "server.js",

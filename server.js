@@ -1,5 +1,5 @@
 // Import required modules
-require("dotenv").config(); // Used to load the env file 
+require("dotenv").config(); // Used to load the env file which contains MongoDB connection string
 var express = require("express");
 var path = require("path");
 const cors = require("cors");
@@ -43,6 +43,7 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     }
 });
+
 
 let database;
 let lessonsCollection;
