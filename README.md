@@ -7,14 +7,16 @@ https://github.com/maheen-y/FullStack_BackEND
 https://cst3144-school-app.onrender.com/lessons 
 
 ## Description
-The backend is built using Express js and Node js and hosted on Render.com
+The backend is built using Express.js and Node.js and hosted on Render.com
 
 Backend is connected to MongoDB Atlas using MongoDB's native driver 
-The database consists 2 collections:
-* lessons - contains lesson information such as subject, location, price and availability
-* orders - stores order data when customer completes checkout form
 
-Backend folder contains an env file which stores the MongoDB URI securely
+The database consists of 2 collections:
+* lessons - contains lesson information such as subject, location, price and availability
+* orders - stores order data when customer completes the checkout form
+
+Backend folder contains an env file which stores the MongoDB URI securely 
+This prevents the connection string from being visible publicly on GitHub if it was contained in the server.js file 
 
 Gitignore file is used to prevent the node modules folder and env file from being uploaded to the GitHub repository
 
